@@ -1,40 +1,123 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
+// Os navios são gerados aleatoriamente, fazendo um loop infinito até encontrar uma posição vaga par ao navio
 
 int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
+    int tabuleiro[10][10];
 
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+    // Inicializar toda a matriz com 0 (zero) indicando água
+    for (int i=0; i<10;i++) {
+        for (int j=0; j<10; j++) {
+            tabuleiro[i][j] = 0;
+        }
+    }
 
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
+    // Adicionando o primeiro navio na horizontal (Gerando aleatoriamente)
+    srand(time(0));
+    int navioHorizontal_X = rand() % 8; // %8 garante que não ultrapasse a matriz
+    int navioHorizontal_Y = rand() % 8;
 
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
+    printf("Coordenadas do navio horizontal:\n");
+    for (int i=0; i<3; i++) {
+        printf("(%d, %d)\n", navioHorizontal_Y, navioHorizontal_X + i);
+        tabuleiro[navioHorizontal_Y][navioHorizontal_X + i] = 3;
+    }
+
+    // Adicionando o segundo navio na vertical (Gerando aleatoriamente)
+    int navioVertical_Y, navioVertical_X;
+    while (1) {
+        navioVertical_X = rand() % 8;
+        navioVertical_Y = rand() % 8;
+
+        int podeAdicionar = 1; // Flag para verificar se é possível posicionar o navio
+
+        // Verificar se há espaços vazios para o navio (sem sobreposição)
+        for (int i=0; i<3; i++) {
+            if (tabuleiro[navioVertical_Y + i][navioVertical_X] == 3) {
+                podeAdicionar = 0;
+                break;
+            }
+        }
+
+        if (podeAdicionar) {
+            break;
+        }
+    }
+
+    printf("Coordenadas do navio vertical:\n");
+    for (int i=0; i<3; i++) {
+        printf("(%d, %d)\n", navioVertical_Y + i, navioVertical_X);
+        tabuleiro[navioVertical_Y + i][navioVertical_X] = 3;
+    }
     
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
 
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
+    // Adicionando o terceiro navio na diagonal secundária (Gerando aleatoriamente)
+    int navioDiagonalSecundaria_Y, navioDiagonalSecundaria_X;
+    while (1) {
+        navioDiagonalSecundaria_X = rand() % 8 + 2;
+        navioDiagonalSecundaria_Y = rand() % 8;
 
-    return 0;
+        int podeAdicionar = 1; // Flag para verificar se é possível posicionar o navio
+
+        // Verificar se há espaços vazios para o navio (sem sobreposição)
+        for (int i=0; i<3; i++) {
+            if (tabuleiro[navioDiagonalSecundaria_Y + i][navioDiagonalSecundaria_X - i] == 3) {
+                podeAdicionar = 0;
+                break;
+            }
+        }
+
+        if (podeAdicionar) {
+            break;
+        }
+    }
+
+    printf("Coordenadas do navio diagonal secundária:\n");
+    for (int i=0; i<3; i++) {
+        printf("(%d, %d)\n", navioDiagonalSecundaria_Y + i, navioDiagonalSecundaria_X - i);
+        tabuleiro[navioDiagonalSecundaria_Y + i][navioDiagonalSecundaria_X - i] = 3;
+    }
+
+    // Adicionando o quarto navio na diagonal primária (Gerando aleatoriamente)
+    int navioDiagonalPrimaria_Y, navioDiagonalPrimaria_X;
+    while (1) {
+        navioDiagonalPrimaria_X = rand() % 8;
+        navioDiagonalPrimaria_Y = rand() % 8;
+
+        int podeAdicionar = 1; // Flag para verificar se é possível posicionar o navio
+
+        // Verificar se há espaços vazios para o navio (sem sobreposição)
+        for (int i=0; i<3; i++) {
+            if (tabuleiro[navioDiagonalPrimaria_Y + i][navioDiagonalPrimaria_X + i] == 3) {
+                podeAdicionar = 0;
+                break;
+            }
+        }
+
+        if (podeAdicionar) {
+            break;
+        }
+    }
+
+    printf("Coordenadas do navio diagonal primária:\n");
+    for (int i=0; i<3; i++) {
+        printf("(%d, %d)\n", navioDiagonalPrimaria_Y + i, navioDiagonalPrimaria_X + i);
+        tabuleiro[navioDiagonalPrimaria_Y + i][navioDiagonalPrimaria_X + i] = 3;
+    }
+    
+    printf("----- TABULEIRO NAVAL -----\n");
+    printf("   A B C D E F G H I J\n");
+    for (int i=0; i<10; i++) {
+        printf("%2d", i+1);
+        for (int j=0; j<10; j++) {
+            if (tabuleiro[i][j] == 3) {
+                printf(" \033[1;31m%d\033[0m", 3);
+            } else {
+                printf(" %d", 0);
+            }
+        }
+        printf("\n");
+    }
 }
